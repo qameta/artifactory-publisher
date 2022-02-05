@@ -1,0 +1,33 @@
+name: 'Artifactory Publishing Action'
+description: 'Publishes Artifacts to Artifactory'
+inputs:
+  endpoint:
+    description: 'Artifactory URL (full path to helm repo)'
+    required: true
+  saUsername:
+    description: 'Service Account Name'
+    required: true
+  saPass:
+    description: 'Service Account Password'
+    required: true
+  accessToken:
+    description: 'Service Account Token'
+    required: true
+  repoName:
+    description: 'Repo Name'
+    required: true
+  chart:
+    description: 'Chart location without . before e.g. charts/allure-testops'
+    required: true
+
+runs:
+    using: composite
+  steps:
+    - run: echo "Installing Helm"
+      shell: bash
+    - run: scripts/install_helm.sh
+      shell: bash
+    - run: scripts/add_repo.sh ${{ inputs.saUsername }} ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
+      shell: bash
+    - run: scripts/publish.sh ${{ inputs.chart }} ${{ inputs.repoName }} ${{ inputs.accessToken }}
+      shell: bash
