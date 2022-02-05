@@ -22,9 +22,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: install_helm.sh
+    - run: echo "Listing Current Dir" && ls -lah
       shell: bash
-    - run: add_repo.sh ${{ inputs.saUsername }} ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
+    - run: |
+        echo "Installing Helm"
+        curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+        apt-get install -y apt-transport-https
+        echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+        apt-get update
+        apt-get install -y helm
+        helm plugin install https://github.com/belitre/helm-push-artifactory-plugin --version v1.0.2
       shell: bash
-    - run: publish.sh ${{ inputs.chart }} ${{ inputs.repoName }} ${{ inputs.accessToken }}
+    - run: |
+        echo "Adding Repo ${{ inputs.repoName }}"
+        helm repo add --username ${{ inputs.saUsername }} --password ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
+      shell: bash
+    - run: |
+        echo "Publishing Helm Chart ${{ inputs.chart }}"
+        helm push-artifactory ${{ inputs.chart }} ${{ inputs.repoName }} --access-token ${{ inputs.accessToken }} --skip-reindex
       shell: bash
