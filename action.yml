@@ -22,11 +22,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: echo "Installing Helm"
+    - run: ./scripts/install_helm.sh
       shell: bash
-    - run: scripts/install_helm.sh
+    - run: ./scripts/add_repo.sh ${{ inputs.saUsername }} ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
       shell: bash
-    - run: scripts/add_repo.sh ${{ inputs.saUsername }} ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
-      shell: bash
-    - run: scripts/publish.sh ${{ inputs.chart }} ${{ inputs.repoName }} ${{ inputs.accessToken }}
+    - run: ./scripts/publish.sh ${{ inputs.chart }} ${{ inputs.repoName }} ${{ inputs.accessToken }}
       shell: bash
