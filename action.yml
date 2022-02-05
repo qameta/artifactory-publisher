@@ -19,9 +19,8 @@ inputs:
   chart:
     description: 'Chart location without . before e.g. charts/allure-testops'
     required: true
-
 runs:
-    using: composite
+  using: composite
   steps:
     - run: echo "Installing Helm"
       shell: bash
