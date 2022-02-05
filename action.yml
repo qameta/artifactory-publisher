@@ -34,7 +34,7 @@ runs:
         helm plugin install https://github.com/belitre/helm-push-artifactory-plugin --version v1.0.2
       shell: bash
     - run: |
-        echo "Adding Repo ${{ inputs.repoName }}"
+        echo "Adding Repo ${{ inputs.repoName }} with username ${{ inputs.saUsername }}"
         helm repo add --username ${{ inputs.saUsername }} --password ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
       shell: bash
     - run: |
