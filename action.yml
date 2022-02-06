@@ -4,12 +4,6 @@ inputs:
   endpoint:
     description: 'Artifactory URL (full path to helm repo)'
     required: true
-  saUsername:
-    description: 'Service Account Name'
-    required: true
-  saPass:
-    description: 'Service Account Password'
-    required: true
   accessToken:
     description: 'Service Account Token'
     required: true
