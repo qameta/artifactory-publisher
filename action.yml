@@ -35,9 +35,9 @@ runs:
       shell: bash
     - run: |
         echo "Adding Repo ${{ inputs.repoName }} with username ${{ inputs.saUsername }}"
-        helm repo add --username "${{ inputs.saUsername }}" --password "${{ inputs.saPass }}" ${{ inputs.repoName }} ${{ inputs.endpoint }}
+        helm repo add --username ${{ inputs.saUsername }} --password ${{ inputs.saPass }} ${{ inputs.repoName }} ${{ inputs.endpoint }}
       shell: bash
     - run: |
         echo "Publishing Helm Chart ${{ inputs.chart }}"
-        helm push-artifactory ${{ inputs.chart }} ${{ inputs.repoName }} --access-token "${{ inputs.accessToken }}" --skip-reindex
+        helm push-artifactory ${{ inputs.chart }} ${{ inputs.repoName }} --access-token ${{ inputs.accessToken }} --skip-reindex
       shell: bash
