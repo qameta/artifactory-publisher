@@ -35,7 +35,7 @@ runs:
       shell: bash
     - run: |
         echo "Adding Repo ${{ inputs.repoName }} with username ${{ inputs.saUsername }}"
-        echo ${{ inputs.saPass }} | helm repo add --username ${{ inputs.saUsername }} ${{ inputs.repoName }} ${{ inputs.endpoint }} --password-stdin
+        echo ${{ inputs.saPass }} | helm repo add ${{ inputs.repoName }} ${{ inputs.endpoint }} --username ${{ inputs.saUsername }} --password-stdin
       shell: bash
     - run: |
         echo "Publishing Helm Chart ${{ inputs.chart }}"
