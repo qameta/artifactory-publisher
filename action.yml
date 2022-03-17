@@ -33,5 +33,5 @@ runs:
       shell: bash
     - run: |
         echo "Publishing Helm Chart ${{ inputs.chart }}"
-        helm push-artifactory ${{ inputs.chart }} ${{ inputs.repoName }} --access-token ${{ inputs.accessToken }} --skip-reindex
+        helm push-artifactory ${{ inputs.chart }} ${{ inputs.endpoint }} --access-token ${{ inputs.accessToken }}
       shell: bash
