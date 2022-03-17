@@ -4,14 +4,20 @@ inputs:
   endpoint:
     description: 'Artifactory URL (full path to helm repo)'
     required: true
-  accessToken:
-    description: 'Service Account Token'
+  username:
+    description: 'Username'
+    required: true
+  password:
+    description: 'Password'
+    required: true
+  version:
+    default: 'version'
     required: true
   repoName:
     description: 'Repo Name'
     required: true
   chart:
-    description: 'Chart location without . before e.g. charts/allure-testops'
+    description: "Chart"
     required: true
 runs:
   using: "composite"
@@ -24,14 +30,11 @@ runs:
         sudo apt-get install -y apt-transport-https
         echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
         sudo apt-get update
-        sudo apt-get install -y helm
-        helm plugin install https://github.com/belitre/helm-push-artifactory-plugin --version v1.0.2
+        sudo apt-get install -y helm curl
       shell: bash
     - run: |
-        echo "Adding Repo ${{ inputs.repoName }} with username ${{ inputs.saUsername }}"
-        helm repo add ${{ inputs.repoName }} ${{ inputs.endpoint }}
-      shell: bash
-    - run: |
-        echo "Publishing Helm Chart ${{ inputs.chart }}"
-        helm push-artifactory ${{ inputs.chart }} ${{ inputs.endpoint }} --access-token ${{ inputs.accessToken }}
+        echo "Packaging chart ${{ inputs.chart }}"
+        helm package ${{ inputs.chart }}
+        echo "Publishing Helm Chart"
+        curl -u ${{ inputs.username }}:${{ inputs.password }} -T ${{ inputs.repoName }}-${{ inputs.version }}.tgz {{ inputs.endpoint }}/${{ inputs.repoName }}/${{ inputs.repoName }}-${{ inputs.version }}.tgz
       shell: bash
