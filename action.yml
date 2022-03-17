@@ -37,5 +37,5 @@ runs:
         helm dependency update ${{ inputs.chart }}
         helm package ${{ inputs.chart }}
         echo "Publishing Helm Chart"
-        curl -u ${{ inputs.username }}:${{ inputs.password }} -T ${{ inputs.repoName }}-${{ inputs.version }}.tgz {{ inputs.endpoint }}/${{ inputs.repoName }}/${{ inputs.repoName }}-${{ inputs.version }}.tgz
+        curl -u ${{ inputs.username }}:${{ inputs.password }} -T ${{ inputs.repoName }}-${{ inputs.version }}.tgz ${{ inputs.endpoint }}/${{ inputs.repoName }}/${{ inputs.repoName }}-${{ inputs.version }}.tgz
       shell: bash
